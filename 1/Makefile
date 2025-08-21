@@ -1,54 +1,64 @@
-# Makefile untuk HTTP Server Assembly x86-64
-# Target: Linux x86-64
+# Define source and binary directories
+SRCDIR = src
+BINDIR = bin
 
-ASM = as
-LD = ld
-SERVER_SRC = http_server.s
-SERVER_OBJ = http_server.o
-SERVER_BIN = http_server
+# --- Compiler and Assembler Definitions ---
+ASM = nasm
+ASMFLAGS = -f elf64
+CC = gcc
+CFLAGS = -Wall -O2 -c
 
-ASMFLAGS = --64 -g
-LDFLAGS = -m elf_x86_64
+# --- Project Files ---
+# Define the final executable path
+TARGET = $(BINDIR)/server
 
-.PHONY: all clean run test
+# Define the source files
+SOURCES_ASM = $(wildcard $(SRCDIR)/*.asm)
+SOURCES_C = $(wildcard $(SRCDIR)/*.c)
 
-all: $(SERVER_BIN)
-	chmod +x ./$(SERVER_BIN)
+# Automatically generate the list of object files to be placed in the bin directory
+OBJS = $(patsubst $(SRCDIR)/%.asm,$(BINDIR)/%.o,$(SOURCES_ASM))
+OBJS += $(patsubst $(SRCDIR)/%.c,$(BINDIR)/%.o,$(SOURCES_C))
 
-$(SERVER_OBJ): $(SERVER_SRC)
+
+# --- Build Rules ---
+.PHONY: all run clean
+
+# Default rule: build the target executable
+# This depends on the final server binary
+all: $(TARGET)
+
+# Rule to link all object files from the bin directory into the final executable
+# The '| $(BINDIR)' is an order-only prerequisite, ensuring the directory is created first.
+# -nostartfiles: Don't link the standard C startup files (which contain _start).
+# -no-pie: Create a regular, position-dependent executable.
+$(TARGET): $(OBJS) | $(BINDIR)
+	$(CC) -o $@ $^ -nostartfiles -no-pie
+
+# Rule to create the bin directory if it doesn't exist
+$(BINDIR):
+	@mkdir -p $(BINDIR)
+
+# --- MODIFIED RULES to output files to the 'bin' directory ---
+
+# Generic rule to compile any .asm file from src into a .o file in the bin directory
+$(BINDIR)/%.o: $(SRCDIR)/%.asm | $(BINDIR)
 	$(ASM) $(ASMFLAGS) -o $@ $<
 
-$(SERVER_BIN): $(SERVER_OBJ)
-	$(LD) $(LDFLAGS) -o $@ $<
+# Generic rule to compile any .c file from src into a .o file in the bin directory
+$(BINDIR)/%.o: $(SRCDIR)/%.c | $(BINDIR)
+	$(CC) $(CFLAGS) -o $@ $<
 
+
+# --- Utility Rules ---
+
+# Rule to run the server. Depends on 'all' to ensure it's built first.
+run: all
+	@echo "Starting server on :8080 ..."
+	./$(TARGET)
+
+# Rule to clean up build files. 'rm -rf' removes the directory and its contents.
+# --- FIXED: Removed *.content.html to prevent deleting source content ---
 clean:
-	rm -f $(SERVER_OBJ) $(SERVER_BIN)
-
-run: $(SERVER_BIN)
-	./$(SERVER_BIN)
-
-test: $(SERVER_BIN)
-	@echo "Starting server in background..."
-	./$(SERVER_BIN) &
-	@sleep 10
-	@echo "Testing GET /"
-	curl -i http://localhost:8080/
-	@echo -e "\n\nTesting GET /about"
-	curl -i http://localhost:8080/about
-	@echo -e "\n\nTesting GET /test"
-	curl -i http://localhost:8080/test
-	@echo -e "\n\nTesting POST /test"
-	curl -i -X POST -d "data=hello" http://localhost:8080/test
-	@echo -e "\n\nTesting 404 error"
-	curl -i http://localhost:8080/notfound
-	@echo -e "\n\nKilling server..."
-	sudo pkill -f http_server
-	make clean
-
-help:
-	@echo "Available commands:"
-	@echo "  make all        - Build the server"
-	@echo "  make clean      - Clean build files"
-	@echo "  make run        - Run the server"
-	@echo "  make test       - Build and test the server"
-	@echo "  make help       - Show this help"
+	rm -rf $(BINDIR)
+	rm -f server.log submitted.txt

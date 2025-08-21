@@ -1,0 +1,33 @@
+<!-- submitted.content.html -->
+<style>
+    h1 { font-size: 2.5em; color: #222; margin-bottom: 0.5em; }
+    #content-display {
+        background-color: #f9f9f9;
+        padding: 1em;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        min-height: 150px;
+        white-space: pre-wrap; /* Preserves line breaks and spaces */
+        font-family: monospace;
+    }
+</style>
+<h1>Submitted Content</h1>
+<p>This is the content that was saved on the server:</p>
+<div id="content-display">Loading...</div>
+
+<script>
+    // This script will fetch the raw text and display it
+    fetch('/submitted.txt')
+        .then(response => {
+            if (!response.ok) { throw new Error('File not found'); }
+            return response.text();
+        })
+        .then(text => {
+            const display = document.getElementById('content-display');
+            display.textContent = text || '(The file is empty)';
+        })
+        .catch(error => {
+            console.error('Error fetching content:', error);
+            document.getElementById('content-display').textContent = 'Error: Could not load the submitted content.';
+        });
+</script>

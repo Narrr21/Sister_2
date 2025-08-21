@@ -1,0 +1,39 @@
+<!-- submit.content.html -->
+<style>
+    h1 { font-size: 2.5em; color: #222; margin-bottom: 0.5em; }
+    label { display: block; font-weight: 500; margin-bottom: 0.5em; }
+    textarea {
+        width: 100%;
+        min-height: 150px;
+        padding: 0.8em;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 1em;
+        box-sizing: border-box;
+        resize: vertical;
+    }
+    button {
+        display: block;
+        width: 100%;
+        padding: 1em;
+        margin-top: 1em;
+        border: none;
+        border-radius: 8px;
+        background-color: #333;
+        color: #fff;
+        font-size: 1.1em;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #555;
+    }
+</style>
+<h1>Submit Your Text</h1>
+<p>Enter any text into the box below. When you click submit, the server will save it to a file and redirect you.</p>
+<form action="/submit" method="POST">
+    <label for="text_input">Your Message:</label>
+    <textarea id="text_input" name="text" required></textarea>
+    <button type="submit">Submit</button>
+</form>
