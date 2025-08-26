@@ -1,5 +1,121 @@
 GET / HTTP/1.1
 Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+DEBUG: Cleaned request path: 
+/
+Action: Rendering HTML template.
+
+DEBUG: Constructed content path: 
+index.content.html
+POST /submit HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+Content-Length: 33
+Content-Type: application/x-www-form-urlencoded
+
+text=Test%20from%20shell%20script
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+DEBUG: Cleaned request path: 
+/
+Action: Rendering HTML template.
+
+DEBUG: Constructed content path: 
+index.content.html
+POST /submit HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+Content-Length: 27
+Content-Type: application/x-www-form-urlencoded
+
+text=Test from shell script
+PUT /submitted.txt HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+Content-Length: 21
+Content-Type: application/x-www-form-urlencoded
+
+Konten baru dari PUT.
+Action: Handling PUT request for submitted.txt
+
+DELETE /submitted.txt HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+Action: Handling DELETE request for submitted.txt
+
+GET /submitted.txt HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+DEBUG: Cleaned request path: 
+/submitted.txt
+Action: Serving submitted.txt.
+
+GET / HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+DEBUG: Cleaned request path: 
+/
+Action: Rendering HTML template.
+
+DEBUG: Constructed content path: 
+index.content.html
+POST /submit HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+Content-Length: 27
+Content-Type: application/x-www-form-urlencoded
+
+text=Test from shell script
+PUT /submitted.txt HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+Content-Length: 21
+Content-Type: application/x-www-form-urlencoded
+
+Konten baru dari PUT.
+Action: Handling PUT request for submitted.txt
+
+DELETE /submitted.txt HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+Action: Handling DELETE request for submitted.txt
+
+GET /submitted.txt HTTP/1.1
+Host: localhost:8080
+User-Agent: curl/8.5.0
+Accept: */*
+
+
+DEBUG: Cleaned request path: 
+/submitted.txt
+Action: Serving submitted.txt.
+
+GET / HTTP/1.1
+Host: localhost:8080
 Connection: keep-alive
 sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
 sec-ch-ua-mobile: ?0
@@ -15,15 +131,13 @@ Accept-Encoding: gzip, deflate, br, zstd
 Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
 
 
-Routing GET request...
-
 DEBUG: Cleaned request path: 
 /
 Action: Rendering HTML template.
 
 DEBUG: Constructed content path: 
 index.content.html
-GET /submitted.html HTTP/1.1
+GET /about.html HTTP/1.1
 Host: localhost:8080
 Connection: keep-alive
 sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
@@ -41,7 +155,76 @@ Accept-Encoding: gzip, deflate, br, zstd
 Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
 
 
-Routing GET request...
+DEBUG: Cleaned request path: 
+/about.html
+Action: Rendering HTML template.
+
+DEBUG: Constructed content path: 
+about.content.html
+GET /submit.html HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: http://localhost:8080/about.html
+Accept-Encoding: gzip, deflate, br, zstd
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
+
+
+DEBUG: Cleaned request path: 
+/submit.html
+Action: Rendering HTML template.
+
+DEBUG: Constructed content path: 
+submit.content.html
+POST /submit HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+Content-Length: 16
+Cache-Control: max-age=0
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Origin: http://localhost:8080
+Content-Type: application/x-www-form-urlencoded
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: http://localhost:8080/submit.html
+Accept-Encoding: gzip, deflate, br, zstd
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
+
+text=tes+123+aja
+GET /submitted.html HTTP/1.1
+Host: localhost:8080
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+sec-ch-ua-mobile: ?0
+sec-ch-ua-platform: "Windows"
+Referer: http://localhost:8080/submit.html
+Accept-Encoding: gzip, deflate, br, zstd
+Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
+
 
 DEBUG: Cleaned request path: 
 /submitted.html
@@ -65,113 +248,25 @@ Accept-Encoding: gzip, deflate, br, zstd
 Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
 
 
-Routing GET request...
-
 DEBUG: Cleaned request path: 
 /submitted.txt
 Action: Serving submitted.txt.
 
-GET /submit.html HTTP/1.1
+PUT /submitted.txt HTTP/1.1
 Host: localhost:8080
-Connection: keep-alive
-sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: same-origin
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Referer: http://localhost:8080/submitted.html
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
+User-Agent: curl/8.5.0
+Accept: */*
+Content-Length: 12
+Content-Type: application/x-www-form-urlencoded
 
+Tes PUT 123.
+Action: Handling PUT request for submitted.txt
 
-Routing GET request...
-
-DEBUG: Cleaned request path: 
-/submit.html
-Action: Rendering HTML template.
-
-DEBUG: Constructed content path: 
-submit.content.html
-GET /about.html HTTP/1.1
+DELETE /submitted.txt HTTP/1.1
 Host: localhost:8080
-Connection: keep-alive
-sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: same-origin
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Referer: http://localhost:8080/submit.html
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
+User-Agent: curl/8.5.0
+Accept: */*
 
 
-Routing GET request...
+Action: Handling DELETE request for submitted.txt
 
-DEBUG: Cleaned request path: 
-/about.html
-Action: Rendering HTML template.
-
-DEBUG: Constructed content path: 
-about.content.html
-GET / HTTP/1.1
-Host: localhost:8080
-Connection: keep-alive
-sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: same-origin
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Referer: http://localhost:8080/about.html
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
-
-
-Routing GET request...
-
-DEBUG: Cleaned request path: 
-/
-Action: Rendering HTML template.
-
-DEBUG: Constructed content path: 
-index.content.html
-GET /about.html HTTP/1.1
-Host: localhost:8080
-Connection: keep-alive
-sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
-sec-ch-ua-mobile: ?0
-sec-ch-ua-platform: "Windows"
-Upgrade-Insecure-Requests: 1
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Sec-Fetch-Site: same-origin
-Sec-Fetch-Mode: navigate
-Sec-Fetch-User: ?1
-Sec-Fetch-Dest: document
-Referer: http://localhost:8080/
-Accept-Encoding: gzip, deflate, br, zstd
-Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,id;q=0.7,ms;q=0.6,ha;q=0.5,zh-CN;q=0.4,zh;q=0.3
-
-
-Routing GET request...
-
-DEBUG: Cleaned request path: 
-/about.html
-Action: Rendering HTML template.
-
-DEBUG: Constructed content path: 
-about.content.html

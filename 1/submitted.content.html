@@ -16,7 +16,6 @@
 <div id="content-display">Loading...</div>
 
 <script>
-    // This script will fetch the raw text and display it
     fetch('/submitted.txt')
         .then(response => {
             if (!response.ok) { throw new Error('File not found'); }

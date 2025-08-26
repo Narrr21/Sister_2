@@ -8,7 +8,7 @@ section .data
     ; sockaddr_in
     server_addr:
         dw 2              ; AF_INET
-        dw 0x901f         ; port 8080 (network byte order)
+        dw 0x901f         ; port 8080
         dd 0              ; INADDR_ANY
         dq 0              ; padding
 
@@ -26,6 +26,8 @@ section .data
     ; HTTP method strings
     method_get  db "GET "
     method_post db "POST "
+    method_put  db "PUT "      
+    method_del  db "DELETE "   
 
     ; Base dir + default
     www_dir db "./www/",0
@@ -36,6 +38,8 @@ section .data
     ; Debug Messages
     log_get_msg     db "Routing GET request...", 10, 0
     log_post_msg    db "Routing POST request...", 10, 0
+    log_put_msg     db "Routing PUT request...", 10, 0
+    log_del_msg    db "Routing DEL request...", 10, 0
 
 section .bss
     request_buffer resb 4096
@@ -51,6 +55,8 @@ global log_msg_simple
 extern send_page
 extern log_msg
 extern handle_submit
+extern handle_put
+extern handle_delete 
 
 _start:
     ; socket
@@ -172,22 +178,54 @@ parse_http_request:
     test rax, rax
     jz handle_post
 
+    ; check PUT
+    mov rsi, request_buffer
+    mov rdi, method_put
+    mov rcx, 4
+    call strncmp
+    test rax, rax
+    jz handle_put_request
+
+    ; check DELETE
+    mov rsi, request_buffer
+    mov rdi, method_del
+    mov rcx, 7
+    call strncmp
+    test rax, rax
+    jz handle_delete_request
+
     jmp send_405_response
 
 handle_get:
     lea rdi, [log_get_msg]
-    call log_msg_simple
+    ; call log_msg_simple
     lea rsi, [request_buffer+4]
     call send_page
     ret
 
 handle_post:
     lea rdi, [log_post_msg]
-    call log_msg_simple
+    ; call log_msg_simple
     mov rdi, [client_fd]
     lea rsi, [request_buffer]
     mov rdx, r15
     call handle_submit
+    ret
+
+handle_put_request:
+    lea rdi, [log_put_msg]
+    ; call log_msg_simple
+    mov rdi, [client_fd]
+    lea rsi, [request_buffer]
+    mov rdx, r15
+    call handle_put
+    ret
+
+handle_delete_request:
+    lea rdi, [log_del_msg]
+    ; call log_msg_simple
+    mov rdi, [client_fd]
+    call handle_delete
     ret
 
 send_404_response:

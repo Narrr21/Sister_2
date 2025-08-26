@@ -4,12 +4,11 @@ global handle_submit
 section .data
     upload_file         db "submitted.txt", 0
 
-    ; --- NEW: HTTP 302 Redirect Response ---
     ; This tells the browser to navigate to /submitted.html
     http_redirect       db "HTTP/1.1 302 Found", 13, 10, "Location: /submitted.html", 13, 10, "Connection: close", 13, 10, 13, 10
     http_redirect_len   equ $ - http_redirect
 
-    ; --- For parsing the request ---
+    ; parsing the request
     crlf_crlf           db 13, 10, 13, 10
     crlf_crlf_len       equ $ - crlf_crlf
     content_len_hdr     db "Content-Length: "
@@ -33,18 +32,18 @@ handle_submit:
     mov r14, rsi      ; Save request buffer pointer
     mov r13, rdx      ; Save request length
 
-    ; --- 1. Find Content-Length header ---
+    ; Find Content-Length header
     mov rdi, r14
     mov rsi, r13
     mov rdx, content_len_hdr
     mov rcx, content_len_hdr_len
     call memmem
     test rax, rax
-    jz .send_redirect ; If header not found, just redirect
+    jz .send_redirect ; just redirect
 
     add rax, content_len_hdr_len
 
-    ; --- 2. Convert ASCII number to integer (body_length) ---
+    ; Convert ASCII number to integer (body_length)
     xor rbx, rbx      ; rbx will hold the body_length
     mov rsi, rax
 .atoi_loop:
@@ -60,7 +59,7 @@ handle_submit:
     jmp .atoi_loop
 .atoi_done:
 
-    ; --- 3. Find the start of the HTTP body ---
+    ; Find the start of the HTTP body
     mov rdi, r14
     mov rsi, r13
     mov rdx, crlf_crlf
@@ -72,7 +71,7 @@ handle_submit:
     add rax, 4        ; Move pointer past the "\r\n\r\n"
     mov rbp, rax      ; rbp = pointer to the start of the body
 
-    ; --- 4. Decode, open file, and write the body ---
+    ; Decode, open file, and write the body
     ; First, remove the "text=" prefix
     add rbp, 5        ; Move data pointer past "text="
     sub rbx, 5        ; Decrease total length by 5
@@ -105,7 +104,7 @@ handle_submit:
     syscall
 
 .send_redirect:
-    ; --- 5. Send the redirect response to the browser ---
+    ; Send the redirect response to the browser
     mov rax, 1
     mov rdi, r15      ; client_fd
     lea rsi, [rel http_redirect]

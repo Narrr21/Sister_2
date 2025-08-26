@@ -99,6 +99,7 @@ exit
 router ospf 1
 router-id 1.1.<Y>.1
 network 10.<Y>.0.0 0.0.0.7 area 0
+redistribute bgp 6500<Y>
 exit
 
 ! Save configuration
@@ -264,35 +265,46 @@ write memory
 ### 3.5 Access Control Lists (ACL)
 
 #### 3.5.1 Government Zone ACL
+
+this is for GK:
+
 ```cisco
 ip access-list extended 101
-permit ip 10.2.1.0 0.0.0.255 any
-permit ip 10.3.1.0 0.0.0.255 any
-permit ip 10.4.1.0 0.0.0.255 any
-permit icmp any 10.1.1.0 0.0.0.255 echo-reply
-permit tcp any 10.1.1.0 0.0.0.255 established
-permit udp any eq bootps any eq bootpc
-permit udp any eq domain any gt 1023
-deny ip any any
+    permit ip 10.2.1.0 0.0.0.255 any
+    permit ip 10.3.1.0 0.0.0.255 any
+    permit ip 10.4.1.0 0.0.0.255 any
+    deny icmp any 10.1.1.0 0.0.0.255 echo
+    permit icmp any 10.1.1.0 0.0.0.255
+    permit tcp any 10.1.1.0 0.0.0.255 established
+    permit udp any eq bootps any eq bootpc
+    permit udp any eq domain any gt 1023
+    deny ip any any
 
 interface gigabitEthernet 0/1
 ip access-group 101 out
 ```
 
+For RR:
+change top 3 to other nation BorderRouter IP (Order Does not matter)
+after that change 10.1.x.x to 10.<Y>.x.x
+
 #### 4.3.2 Enterprise Zone ACL
+This if for GK
 ```cisco
 ip access-list extended 102
-permit ip 10.1.1.0 0.0.0.255 any
-permit tcp any host 10.1.2.11 eq 443
-permit tcp any host 10.1.2.10 eq domain
-permit udp any host 10.1.2.12 eq bootps
-permit udp any host 10.1.2.12 eq bootpc
-permit icmp any ip 10.1.2.0 0.0.0.233 echo-reply
-deny ip any any
+    permit ip 10.1.1.0 0.0.0.255 any
+    permit tcp any host 10.1.2.11 eq 443
+    permit udp any host 10.1.2.12 eq bootps
+    permit udp any host 10.1.2.10 eq domain
+    deny icmp any 10.1.2.0 0.0.0.255 echo
+    permit icmp any 10.1.2.0 0.0.0.255
+    deny ip any any
 
 interface gigabitEthernet 0/1
 ip access-group 102 out
 ```
+
+for RR, KR and YM change 10.1.x.x to 10.<Y>.x.x
 
 ## 4. Other Configuration
 
@@ -306,18 +318,40 @@ ip access-group 102 out
 
 ### 4.1.2 BGP Configuration
 ```cisco
-! Gokouloryn Border Router
+! GK Border Router
 router bgp 65001
 neighbor 192.168.1.3 remote-as 65003
 neighbor 192.168.1.2 remote-as 65002
-network 10.<Y>.0.0 mask 255.255.0.0
-
-! Redistribution OSPF to BGP
+network 10.1.0.0 mask 255.255.0.0
+network 192.168.1.0
 redistribute ospf 1
+```
 
-! Redistribution BGP to OSPF
-router ospf 1
-redistribute bgp 65001 subnets
+```cisco
+! RR Border Router
+router bgp 65001
+neighbor 192.168.1.1 remote-as 65001
+neighbor 192.168.1.3 remote-as 65003
+network 10.2.0.0 mask 255.255.0.0
+redistribute ospf 1
+```
+
+```cisco
+! KR Border Router
+router bgp 65001
+neighbor 192.168.1.1 remote-as 65001
+neighbor 192.168.1.2 remote-as 65002
+neighbor 192.168.1.4 remote-as 65004
+network 10.3.0.0 mask 255.255.0.0
+redistribute ospf 1
+```
+
+```cisco
+! Gokouloryn Border Router
+router bgp 65001
+neighbor 192.168.1.3 remote-as 65003
+network 10.4.0.0 mask 255.255.0.0
+redistribute ospf 1
 ```
 
 ### 4.2 SSH/Telnet Configuration
@@ -369,7 +403,7 @@ ip nat outside
 interface g0/1
 ip nat inside
 
-access-list 50 permit 10.1.0.0 0.0.0.254
+access-list 50 permit 10.1.0.0 0.0.255.254
 
 ip nat inside source list 50 interface g0/0 overload
 ```
@@ -435,58 +469,3 @@ network 10.3.50.0 0.0.0.255 area 50
 - Ambil acces point pt, ubah ssid (ex: VLAN50_WIFI)
 - Ambil PC, -> Physical, lepas ethernet, tambahkan WMP300N, -> Config, ubash ssid
 - Ambil Smartphone, -> Config, -> Wireless 0, ubah ssid
-
-### 4.6 IPv6 Implementation (Rurinthia & Yamindralia)
-
-#### 4.6.1 IPv6 Addressing Scheme
-```
-Rurinthia:
-- Border Router: 2001:DB8:2::1/64
-- Government: 2001:DB8:2:1::1/64
-- Enterprise: 2001:DB8:2:2::1/64
-- Public: 2001:DB8:2:3::1/64
-
-Yamindralia:
-- Border Router: 2001:DB8:4::1/64
-- Government: 2001:DB8:4:1::1/64
-- Enterprise: 2001:DB8:4:2::1/64
-- Public: 2001:DB8:4:3::1/64
-```
-
-#### 4.6.2 IPv6 Configuration
-```cisco
-# Enable IPv6 Routing
-ipv6 unicast-routing
-
-# Interface Configuration
-interface fa0/0
-ipv6 address 2001:DB8:2::1/64
-ipv6 enable
-
-# IPv6 OSPF
-ipv6 router ospf 1
-router-id 2.2.2.2
-
-interface fa0/0
-ipv6 ospf 1 area 0
-```
-
-#### 4.6.3 IPv6 Tunneling
-```cisco
-# Rurinthia Border Router
-interface tunnel0
-ipv6 address 2001:DB8:100::1/64
-tunnel source 192.168.1.2
-tunnel destination 192.168.1.4
-tunnel mode ipv6ip
-
-# Yamindralia Border Router
-interface tunnel0
-ipv6 address 2001:DB8:100::2/64
-tunnel source 192.168.1.4
-tunnel destination 192.168.1.2
-tunnel mode ipv6ip
-
-# IPv6 Static Route through Tunnel
-ipv6 route 2001:DB8:4::/48 2001:DB8:100::2
-```
